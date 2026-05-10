@@ -1,0 +1,23 @@
+{
+  "$schema": "https://openapi.vercel.sh/vercel.json",
+  "framework": null,
+  "rewrites": [
+    {
+      "source": "/",
+      "destination": "/public/index.html"
+    },
+    {
+      "source": "/app.js",
+      "destination": "/public/app.js"
+    },
+    {
+      "source": "/styles.css",
+      "destination": "/public/styles.css"
+    }
+  ],
+  "functions": {
+    "api/**/*.mjs": {
+      "runtime": "nodejs"
+    }
+  }
+}
