@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>thelittlecave Local Player</title>
+    <link rel="stylesheet" href="/styles.css" />
+  </head>
+  <body data-view="overview">
+    <div class="page-shell">
+      <header class="topbar">
+        <a class="brand" href="#overview" data-view-link="overview">
+          <span class="brand-mark">THELITTLECAVE://LOCAL</span>
+          <span class="brand-copy">mono audio workspace</span>
+        </a>
+
+        <nav class="primary-nav" aria-label="Primary">
+          <button class="nav-link active" data-view-target="overview">[+] overview</button>
+          <button class="nav-link" data-view-target="player">[+] player</button>
+          <button class="nav-link" data-view-target="library">[+] library</button>
+          <button class="nav-link" data-view-target="downloads">[+] downloads</button>
+          <button class="nav-link" data-view-target="spotify">[+] spotify</button>
+          <button class="nav-link" data-view-target="settings">[+] settings</button>
+        </nav>
+      </header>
+
+      <main class="app-shell">
+        <section class="hero-banner">
+          <div class="hero-meta">
+            <span>switch between areas</span>
+            <span>manage local playback</span>
+          </div>
+          <pre class="hero-art" aria-hidden="true">
+  ________  __ __  ______  __      ______________  ________  _    ______________
+ /_  __/ / / // / / ____/ / /     /  _/_  __/_  / / / ____/ / |  / / ____/ ___/
+  / / / /_/ // / / /_    / /      / /  / /   / /_/ / /__   /  | / / /    \__ \
+ / / / __  // /_/ __/   / /____ _/ /  / /   / __  / /___  / /| |/ / /___ ___/ /
+/_/ /_/ /_/ \_____/    /_____//___/ /_/   /_/ /_/\____/ /_/ |___/\____//____/
+          </pre>
+          <div class="hero-command">
+            <span class="prompt">|</span>
+            <span>Keep local playback, Spotify sync, and downloads organized in one workspace.</span>
+          </div>
+        </section>
+
+        <section class="view-section active" data-view="overview">
+          <div class="section-block intro-block">
+            <div>
+              <p class="section-kicker">[+] system overview</p>
+              <h1>thelittlecave Local Player</h1>
+              <p class="lede">
+                Local tracks, queued downloads, Spotify account data, and player controls now live in
+                separate work areas instead of one stacked front page.
+              </p>
+            </div>
+
+            <div class="action-row">
+              <button id="refresh-library" class="button-primary">Refresh Library</button>
+              <button id="spotify-connect" class="button-secondary">Connect Spotify</button>
+            </div>
+          </div>
+
+          <div class="section-block">
+            <div class="block-heading">
+              <h2>[+] areas</h2>
+              <span class="inline-status" id="connection-pill">Offline Spotify</span>
+            </div>
+
+            <div class="overview-grid">
+              <article class="overview-card">
+                <p class="mini-label">[x] player</p>
+                <p>Transport controls, timeline, volume, and active track metadata.</p>
+                <button class="button-link" data-jump-view="player">Open player</button>
+              </article>
+              <article class="overview-card">
+                <p class="mini-label">[x] library</p>
+                <p><span id="library-count">0</span> tracks visible across imported, local, and downloaded audio.</p>
+                <button class="button-link" data-jump-view="library">Open library</button>
+              </article>
+              <article class="overview-card">
+                <p class="mini-label">[x] downloads</p>
+                <p><span id="download-count">0</span> jobs tracked through the local <code>spotdl</code> bridge.</p>
+                <button class="button-link" data-jump-view="downloads">Open downloads</button>
+              </article>
+              <article class="overview-card">
+                <p class="mini-label">[x] spotify</p>
+                <p id="spotify-summary">Account status, playlists, recent listens, and search queue tools.</p>
+                <button class="button-link" data-jump-view="spotify">Open spotify</button>
+              </article>
+            </div>
+          </div>
+        </section>
+
+        <section class="view-section" data-view="player">
+          <div class="section-block">
+            <div class="block-heading">
+              <h2>[+] player</h2>
+              <span class="inline-status">transport</span>
+            </div>
+
+            <div class="player-layout">
+              <div class="now-playing-block">
+                <p class="mini-label">[-] now playing</p>
+                <h3 id="now-playing-title">No track loaded</h3>
+                <p id="now-playing-meta" class="meta-text">Import songs or add audio files to <code>/library</code>.</p>
+              </div>
+
+              <div class="timeline-block">
+                <div class="progress-panel">
+                  <span id="current-time">0:00</span>
+                  <input id="seekbar" type="range" min="0" max="100" value="0" />
+                  <span id="duration">0:00</span>
+                </div>
+
+                <div class="transport">
+                  <button id="prev-track" class="button-secondary">Prev</button>
+                  <button id="play-pause" class="button-primary">Play</button>
+                  <button id="next-track" class="button-secondary">Next</button>
+                </div>
+
+                <div class="player-tools">
+                  <label class="field-inline">
+                    <span>[+] volume</span>
+                    <input id="volume" type="range" min="0" max="1" step="0.01" value="0.8" />
+                  </label>
+
+                  <label class="toggle-wrap">
+                    <input id="shuffle-toggle" type="checkbox" />
+                    <span>[+] shuffle</span>
+                  </label>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view-section" data-view="library">
+          <div class="section-block">
+            <div class="block-heading">
+              <h2>[+] library</h2>
+              <span class="inline-status">sources</span>
+            </div>
+
+            <div class="stack">
+              <div class="action-row">
+                <label class="button-secondary file-button">
+                  Import Files
+                  <input id="file-import" type="file" multiple accept="audio/*" />
+                </label>
+                <label class="button-secondary file-button">
+                  Import Folder
+                  <input id="folder-import" type="file" multiple webkitdirectory directory />
+                </label>
+              </div>
+
+              <p id="library-message" class="meta-text"></p>
+
+              <label class="field">
+                <span>[+] filter tracks</span>
+                <input id="track-filter" type="search" placeholder="Search title, source, or path" />
+              </label>
+
+              <div id="library-list" class="list-grid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view-section" data-view="downloads">
+          <div class="section-block">
+            <div class="block-heading">
+              <h2>[+] downloads</h2>
+              <span class="inline-status">spotdl bridge</span>
+            </div>
+
+            <div class="stack">
+              <label class="field">
+                <span>[+] spotify or youtube url</span>
+                <input id="download-url" type="url" placeholder="https://open.spotify.com/track/..." />
+              </label>
+
+              <div class="action-row">
+                <button id="download-track" class="button-primary">Queue Download</button>
+              </div>
+
+              <p id="download-message" class="meta-text"></p>
+              <div id="download-jobs" class="list-grid"></div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view-section" data-view="spotify">
+          <div class="section-block">
+            <div class="block-heading">
+              <h2>[+] spotify</h2>
+              <button id="spotify-logout" class="button-secondary">Disconnect</button>
+            </div>
+
+            <div class="stack">
+              <div id="spotify-account" class="info-card">
+                <p class="meta-text">
+                  Add your Spotify app credentials to <code>.env</code>, then connect your own account.
+                </p>
+              </div>
+
+              <label class="field">
+                <span>[+] search spotify</span>
+                <div class="search-row">
+                  <input
+                    id="spotify-search-input"
+                    type="search"
+                    placeholder="Search for tracks to inspect or download"
+                  />
+                  <button id="spotify-search-button" class="button-secondary">Search</button>
+                </div>
+              </label>
+
+              <div class="spotify-grid">
+                <div class="data-column">
+                  <h3>[x] playlists</h3>
+                  <div id="spotify-playlists" class="list-grid"></div>
+                </div>
+                <div class="data-column">
+                  <h3>[x] recent</h3>
+                  <div id="spotify-recent" class="list-grid"></div>
+                </div>
+                <div class="data-column">
+                  <h3>[x] search</h3>
+                  <div id="spotify-search-results" class="list-grid"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        <section class="view-section" data-view="settings">
+          <div class="section-block">
+            <div class="block-heading">
+              <h2>[+] settings</h2>
+              <span class="inline-status" id="active-theme-label">thelittlecave default</span>
+            </div>
+
+            <div class="stack">
+              <p class="meta-text">
+                The interface now uses a restrained monochrome system with flat sections and mono typography.
+                Use preset tokens below if you want small variations while keeping the same structure.
+              </p>
+
+              <label class="field">
+                <span>[+] theme preset</span>
+                <select id="theme-select"></select>
+              </label>
+
+              <div id="theme-pickers" class="picker-grid"></div>
+              <div class="action-row">
+                <button id="reset-theme" class="button-secondary">Reset Active Theme</button>
+              </div>
+            </div>
+          </div>
+        </section>
+      </main>
+    </div>
+
+    <audio id="audio-player"></audio>
+    <script src="/app.js"></script>
+  </body>
+</html>
