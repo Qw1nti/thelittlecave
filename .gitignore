@@ -1,0 +1,10 @@
+.env
+.vercel
+.herenow
+.server.pid
+server.stdout.log
+server.stderr.log
+downloads/*
+library/*
+!downloads/.gitkeep
+!library/.gitkeep
