@@ -6,6 +6,11 @@
   "type": "commonjs",
   "scripts": {
     "start": "node server.js",
-    "check": "node --check server.js && node --check public/app.js && node --check api/_lib.mjs && node --check api/config.mjs && node --check api/library.mjs && node --check api/library/import.mjs && node --check api/stream/[trackId].mjs && node --check api/download.mjs && node --check api/downloads.mjs && node --check api/spotify/login.mjs && node --check api/spotify/callback.mjs && node --check api/spotify/logout.mjs && node --check api/spotify/status.mjs && node --check api/spotify/me.mjs && node --check api/spotify/playlists.mjs && node --check api/spotify/recent.mjs && node --check api/spotify/search.mjs && node --check api/spotify/top.mjs"
+    "check": "node --check server.js && node --check public/app.js && node --check api/_lib.mjs && node --check api/config.mjs && node --check api/library.mjs && node --check api/library/import.mjs && node --check api/stream/[trackId].mjs && node --check api/download.mjs && node --check api/downloads.mjs && node --check api/spotify/login.mjs && node --check api/spotify/callback.mjs && node --check api/spotify/logout.mjs && node --check api/spotify/status.mjs && node --check api/spotify/me.mjs && node --check api/spotify/playlists.mjs && node --check api/spotify/recent.mjs && node --check api/spotify/search.mjs && node --check api/spotify/top.mjs",
+    "deploy": "wrangler deploy",
+    "preview": "wrangler dev"
+  },
+  "devDependencies": {
+    "wrangler": "^4.90.0"
   }
 }
